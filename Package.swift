@@ -1,0 +1,36 @@
+// swift-tools-version: 6.0
+
+import PackageDescription
+
+let package = Package(
+    name: "VaporValkey",
+    platforms: [
+        .macOS(.v15),
+        .iOS(.v13),
+        .tvOS(.v13),
+        .watchOS(.v6)
+    ],
+    products: [
+        .library(
+            name: "VaporValkey",
+            targets: ["VaporValkey"]
+        ),
+    ],
+    dependencies: [
+        .package(url: "https://github.com/valkey-io/valkey-swift.git", "0.4.0" ..< "0.5.0"),
+        .package(url: "https://github.com/vapor/vapor.git", from: "4.100.0"),
+    ],
+    targets: [
+        .target(
+            name: "VaporValkey",
+            dependencies: [
+                .product(name: "Valkey", package: "valkey-swift"),
+                .product(name: "Vapor", package: "vapor")
+            ]
+        ),
+        .testTarget(
+            name: "VaporValkeyTests",
+            dependencies: ["VaporValkey"]
+        ),
+    ]
+)

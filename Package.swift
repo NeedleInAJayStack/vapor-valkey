@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 6.1
 
 import PackageDescription
 
@@ -8,7 +8,7 @@ let package = Package(
         .macOS(.v15),
         .iOS(.v13),
         .tvOS(.v13),
-        .watchOS(.v6)
+        .watchOS(.v6),
     ],
     products: [
         .library(
@@ -25,12 +25,15 @@ let package = Package(
             name: "VaporValkey",
             dependencies: [
                 .product(name: "Valkey", package: "valkey-swift"),
-                .product(name: "Vapor", package: "vapor")
+                .product(name: "Vapor", package: "vapor"),
             ]
         ),
         .testTarget(
             name: "VaporValkeyTests",
-            dependencies: ["VaporValkey"]
+            dependencies: [
+                "VaporValkey",
+                .product(name: "VaporTesting", package: "vapor"),
+            ]
         ),
     ]
 )

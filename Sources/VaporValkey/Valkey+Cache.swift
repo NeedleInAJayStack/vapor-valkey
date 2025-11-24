@@ -4,18 +4,17 @@ import Vapor
 public extension Application.Caches.Provider {
     // Use a Valkey client for the cache.
     static func valkey(
-        _ client: any ValkeyClientProtocol,
         encoder: JSONEncoder = JSONEncoder(),
         decoder: JSONDecoder = JSONDecoder()
     ) -> Self {
-        .init { $0.caches.use { $0.caches.valkey(client: client, encoder: encoder, decoder: decoder) } }
+        .init { $0.caches.use { $0.caches.valkey(encoder: encoder, decoder: decoder) } }
     }
 }
 
 extension Application.Caches {
-    func valkey(client: any ValkeyClientProtocol, encoder: JSONEncoder, decoder: JSONDecoder) -> any Cache {
+    func valkey(encoder: JSONEncoder, decoder: JSONDecoder) -> any Cache {
         ValkeyCache(
-            client: client,
+            client: application.valkey,
             eventLoopGroup: application.eventLoopGroup,
             decoder: decoder,
             encoder: encoder

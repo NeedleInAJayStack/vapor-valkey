@@ -19,10 +19,10 @@ let valkeyClient = ValkeyClient(
 vaporApp.valkey = valkeyClient
 
 // Use Valkey for caching
-vaporApp.caches.use(.valkey(valkeyClient))
+vaporApp.caches.use(.valkey())
 
 // Use Valkey for sessions
-vaporApp.sessions.use(.valkey(valkeyClient))
+vaporApp.sessions.use(.valkey())
 ```
 
 When assigning the Application's `valkey` property (the `vaporApp.valkey = valkeyClient` line above), the Application will take ownership of the Valkey client's lifecycle. Specifically, this assignment operation will automatically run the client, and it will be automatically cancelled when the Application is shut down.

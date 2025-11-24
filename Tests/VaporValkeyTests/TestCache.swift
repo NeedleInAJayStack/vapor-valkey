@@ -14,7 +14,7 @@ struct TestCache {
                 logger: app.logger
             )
             app.valkey = client
-            app.caches.use(.valkey(client))
+            app.caches.use(.valkey())
 
             let key = "\(Int.random())"
             let value = "\(Int.random())"
@@ -35,7 +35,7 @@ struct TestCache {
                 logger: app.logger
             )
             app.valkey = client
-            app.caches.use(.valkey(client))
+            app.caches.use(.valkey())
 
             let key = "\(Int.random())"
             let value = "\(Int.random())"
@@ -60,7 +60,7 @@ struct TestCache {
                 logger: app.logger
             )
             app.valkey = client
-            app.caches.use(.valkey(client))
+            app.caches.use(.valkey())
 
             let key = "\(Int.random())"
             let value = "\(Int.random())"

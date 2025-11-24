@@ -14,7 +14,7 @@ struct TestSessions {
                 logger: app.logger
             )
             app.valkey = client
-            app.sessions.use(.valkey(client))
+            app.sessions.use(.valkey())
             app.middleware.use(app.sessions.middleware)
 
             // Setup routes.

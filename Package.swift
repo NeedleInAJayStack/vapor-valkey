@@ -17,6 +17,7 @@ let package = Package(
         ),
     ],
     dependencies: [
+        .package(url: "https://github.com/swift-server/swift-service-lifecycle.git", from: "2.0.0"),
         .package(url: "https://github.com/valkey-io/valkey-swift.git", "0.4.0" ..< "0.5.0"),
         .package(url: "https://github.com/vapor/vapor.git", from: "4.100.0"),
     ],
@@ -24,6 +25,7 @@ let package = Package(
         .target(
             name: "VaporValkey",
             dependencies: [
+                .product(name: "ServiceLifecycle", package: "swift-service-lifecycle"),
                 .product(name: "Valkey", package: "valkey-swift"),
                 .product(name: "Vapor", package: "vapor"),
             ]

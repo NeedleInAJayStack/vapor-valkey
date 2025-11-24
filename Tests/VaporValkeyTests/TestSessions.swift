@@ -13,8 +13,6 @@ struct TestSessions {
                 eventLoopGroup: app.eventLoopGroup,
                 logger: app.logger
             )
-            async let _ = client.run()
-
             app.valkey = client
             app.sessions.use(.valkey(client))
             app.middleware.use(app.sessions.middleware)

@@ -4,13 +4,16 @@ This project provides [valkey-swift](https://github.com/valkey-io/valkey-swift) 
 
 ## Usage
 
-To use this package, create a Valkey client outside of the Vapor application and inject it in:
+To use this package, create a Valkey client and assign it to `Application.valkey`:
 
 ```swift
-let valkeyClient = ValkeyClient(.hostname("localhost", port: 6379), eventLoopGroup: eventLoopGroup, logger: logger)
-async let _ = valkeyClient.run()
-
 let vaporApp = Application.make(.detect)
+
+let valkeyClient = ValkeyClient(
+    .hostname("localhost", port: 6379),
+    eventLoopGroup: app.eventLoopGroup,
+    logger: app.logger
+)
 
 // Attach Valkey service to enable `Application.valkey` & `Request.valkey`
 vaporApp.valkey = valkeyClient
@@ -22,4 +25,4 @@ vaporApp.caches.use(.valkey(valkeyClient))
 vaporApp.sessions.use(.valkey(valkeyClient))
 ```
 
-You are responsible for managing the lifecycle of the Valkey client itself, which is [documented in `valkey-swift`](https://github.com/valkey-io/valkey-swift/tree/main?tab=readme-ov-file#usage).
+When assigning the Application's `valkey` property (the `vaporApp.valkey = valkeyClient` line above), the Application will take ownership of the Valkey client's lifecycle. Specifically, this assignment operation will automatically run the client, and it will be automatically cancelled when the Application is shut down.

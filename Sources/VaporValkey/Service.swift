@@ -1,21 +1,47 @@
+import ServiceLifecycle
 import Valkey
 import Vapor
 
 extension Application {
-    public var valkey: any ValkeyClientProtocol {
+    public var valkey: any ValkeyClientProtocol & ServiceLifecycle.Service {
         get {
-            guard let client = storage[ValkeyClientKey.self] else {
+            guard let valkeyClientStorage = storage[ValkeyClientKey.self] else {
                 fatalError("No valkey client has been configured. Check configuration for `application.valkey = ...`")
             }
-            return client
+            return valkeyClientStorage.client
         }
         set {
-            storage[ValkeyClientKey.self] = newValue
+            let valkeyClientStorage = ValkeyClientStorage(
+                client: newValue,
+                task: Task {
+                    try await newValue.run()
+                }
+            )
+            storage.set(
+                ValkeyClientKey.self,
+                to: valkeyClientStorage,
+                onShutdown: { valkeyClientStorage in
+                    valkeyClientStorage.task.cancel()
+                }
+            )
         }
     }
 
     struct ValkeyClientKey: StorageKey {
-        typealias Value = any ValkeyClientProtocol
+        typealias Value = ValkeyClientStorage
+    }
+}
+
+actor ValkeyClientStorage {
+    let client: any ValkeyClientProtocol & ServiceLifecycle.Service
+    let task: Task<Void, any Error>
+
+    init(
+        client: any ValkeyClientProtocol & ServiceLifecycle.Service,
+        task: Task<Void, any Error>
+    ) {
+        self.client = client
+        self.task = task
     }
 }
 

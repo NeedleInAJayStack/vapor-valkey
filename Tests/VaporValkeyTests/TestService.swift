@@ -13,8 +13,6 @@ struct TestService {
                 eventLoopGroup: app.eventLoopGroup,
                 logger: app.logger
             )
-            async let _ = client.run()
-
             app.valkey = client
 
             let value = "\(Int.random())"

@@ -13,9 +13,8 @@ struct TestCache {
                 eventLoopGroup: app.eventLoopGroup,
                 logger: app.logger
             )
-            async let _ = client.run()
-
-            app.caches.use(.valkey(client))
+            app.valkey = client
+            app.caches.use(.valkey())
 
             let key = "\(Int.random())"
             let value = "\(Int.random())"
@@ -35,9 +34,8 @@ struct TestCache {
                 eventLoopGroup: app.eventLoopGroup,
                 logger: app.logger
             )
-            async let _ = client.run()
-
-            app.caches.use(.valkey(client))
+            app.valkey = client
+            app.caches.use(.valkey())
 
             let key = "\(Int.random())"
             let value = "\(Int.random())"
@@ -61,9 +59,8 @@ struct TestCache {
                 eventLoopGroup: app.eventLoopGroup,
                 logger: app.logger
             )
-            async let _ = client.run()
-
-            app.caches.use(.valkey(client))
+            app.valkey = client
+            app.caches.use(.valkey())
 
             let key = "\(Int.random())"
             let value = "\(Int.random())"
